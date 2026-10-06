@@ -1,8 +1,4 @@
-
-
 # Linux CLI Fundamentals & System Administration**NDG Linux Unhatched Reference & System Hardening Documentation**
-
-This repository serves as a production-grade documentation matrix mapping out foundational Linux systems administration architectures covered in the NDG Linux Unhatched curriculum. It outlines CLI patterns, filesystem structures, system privilege layers, regular expression syntax matrices, and system administrative health diagnostics required to operate infrastructure within modern DevOps, Cloud Engineering, and Security workflows.
 ---## 🖥️ System Architecture & Interface Paradigms
 
 ┌────────────────────────────────────────────────────────┐
@@ -182,10 +178,5 @@ Exposes detailed operational allocation records mapping active kernel processes 
 * ps -e — Pulls data strings mapping every active runtime execution thread throughout the system namespace.
 * ps -ef — Forces full details layout parsing (-f) across all active background processing steps to expose parent-child process chains and parameter flags.
 
----
-
-<FollowUp>
-Would you like me to generate a **production automation shell script** based on these exact commands for your portfolio repository, or should we build out a **sample README file structure** for your upcoming November AWS project?
-</FollowUp>
 
 
