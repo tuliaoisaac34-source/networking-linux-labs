@@ -1,3 +1,5 @@
+
+
 # Linux CLI Fundamentals & System Administration### NDG Linux Unhatched Reference & System Hardening Documentation
 This repository is a production-grade documentation matrix that maps the foundational Linux systems administration architectures covered in the NDG Linux Unhatched curriculum. It outlines CLI patterns, filesystem structures, system privilege layers, regular expression syntax matrices, and system administrative health diagnostics required to operate infrastructure within modern DevOps, Cloud Engineering, and Security workflows.
 ---## 🖥️ System Architecture & Interface Paradigms```text
