@@ -209,7 +209,6 @@ ps -ef — Forces full details layout parsing (-f) across all background process
 
 
 <FollowUp>
-This polished HTML version will format perfectly regardless of line-break removal bugs during clipboard transfers. Let me know if the layout looks **pristine and organized** on your profile page now!
-</FollowUp>
+Check attached photos for reference </FollowUp>
 
 
