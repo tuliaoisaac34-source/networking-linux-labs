@@ -1,214 +1,137 @@
+# Linux Basics 🐧
+Welcome to my **Linux Basics** repository! This project serves as a structured collection of my core Linux system administration notes, command-line fundamentals, and practical examples. 
 
+Everything documented here represents fundamental competencies required for managing environments, auditing file systems, and manipulating data via the Command-Line Interface (CLI).
+---## 🧭 1. Navigation & Pathing BasicsLinux is completely **case-sensitive** (e.g., `ls Documents` works, but `ls documents` will throw an error).
 
-<h1>Linux CLI Fundamentals & System Administration</h1>
-<h3>NDG Linux Unhatched Reference & System Hardening Documentation</h3>
+* `pwd` - Prints the exact working directory path you are currently standing in.
+* `cd` - Changes directories to move around the file system.
+* **Absolute Paths:** Starts from the absolute root directory (e.g., `cd /home/sysadmin`).* **Relative Paths:** Starts from where you are right now.
+  * `.` - Refers to the current directory.
+  * `..` - Moves up one level to the parent directory.
+  * `~` - Shortcut to go straight back to your home directory.
+---
+## 📂 2. File Listing & Metadata (`ls`)
+The `ls` command is used for listing directory contents. Combining it with specific flags reveals deep system metadata:
 
-<p>This repository serves as a production-grade documentation matrix mapping out foundational Linux systems administration architectures covered in the NDG Linux Unhatched curriculum. It outlines CLI patterns, filesystem structures, system privilege layers, regular expression syntax matrices, and system administrative health diagnostics required to operate infrastructure within modern DevOps, Cloud Engineering, and Security workflows.</p>
+* `ls -a` - Lists all entries, including **hidden files** (any file starting with a dot `.`).
+* `ls -l` - Long listing format showing file types, permissions, sizes, and owners.
+* `ls -t` - Sorts the results by timestamp (newest files show first).
+* `ls -s` - Sorts the output by file size.
+* `ls -r` - Reverses the sorting direction of the output.
 
-<hr>
+### Understanding `ls -l` Output Syntax:
+When running a long listing, the metadata fields map out exactly like this:```text
+-rw-r--r--     1    sysadmin    sysadmin      647      Dec 20 2017    hello.sh
+[File Type]        [Owner]      [Group]    [Size]*     [Timestamp]   [Filename]
+[Permissions]
+```
+*\*Note: The raw file size in bytes always sits directly before the modification date and time timestamp.*
+---## 🛡️ 3. Administrative Access & Account Security* `su` - Switches user context to temporarily act as a different user.
+* `su -`, `su -l`, or `su --login` - Fully logs in as the root administrative user.
+* `sudo` - Executes a single, special task with elevated administrative privileges.
+* `exit` - Logs out of the current session or terminal window.
+* `passwd` - Updates or changes user passwords.
+* `passwd -S sysadmin` - Audits password status information.
+  * Outputs columns tracking: Username ➡️ Status (`P` for usable, `L` for locked, `NP` for none) ➡️ Last change date ➡️ Minimum days before change (`0`) ➡️ Maximum days before expiration (`99999`) ➡️ Expiry warning days (`7`).
+---
+## 🔐 4. File Permissions & Ownership (`chmod` / `chown`)
+Every file has access flags broken into three categories: Read (`r`), Write (`w`), and Execute (`x`).
+* File types are denoted at the start: `-` for regular files, `d` for directories, and `l` for symbolic links.
+* `chmod` - Changes file access modes using the **Symbolic Method**:
+  * Targets: `u` (user), `g` (group), `o` (other), `a` (all).
+  * Actions: `+` (add), `-` (remove), `=` (set exact).
+  * Example execution: Changing permissions on a script to test it locally: `./hello.sh`
+* `chown` - Changes target ownership (e.g., `sudo chown root hello.sh` swaps ownership from sysadmin to root).
+---## 📄 5. File Operations & Data Streams### Viewing & Modifying Files* `cat` - Concatenates and quickly displays full contents of small files (e.g., `cd ~/Documents` then `cat animals.txt`).
+* `head -n 5 animal.txt` - Displays only the first 5 lines from the top of the file (defaults to 10 lines if `-n` is omitted).
+* `tail` - Displays a select number of lines from the bottom of a file.
+### Copying, Moving, & Deleting* `cp /etc/passwd .` - Copies a file from a source path to a destination (using `.` here copies it straight to the current directory).
+* `mv people.csv Work` - Moves files or directories from a source to a destination. Can also handle multi-file operations or renames.
+* `rm linux.txt` - Removes a standard file.
+* `rm -r` - Recursively removes an entire directory and its contents.
 
-<h2>🖥️ System Architecture & Interface Paradigms</h2>
+### Bit-Level Operations (`dd`)
+Used for reading and writing data at the raw bit level (e.g., `dd if=/dev/zero of=/tmp/swapex bs=1M count=50`).
+* `if=` - Input file (source to read data from).
+* `of=` - Output file (destination to write data to).
+* `bs=` - Block Size allocation to use for the operation.
+* `count=` - Total number of blocks to process.
+---
+## 🔍 6. Data Filtering & Regular Expressions (`grep`)
+The `grep` utility acts as a powerful text filter, scanning inputs to return lines matching exact patterns (e.g., `grep sysadmin /etc/passwd` or `grep 'root' /etc/passwd`).
+### Regex Pattern Syntaxes* **Basic Patterns:**
+  * `^` - Forces pattern matching only at the **beginning** of a line (e.g., `grep '^root' /etc/passwd`).
+  * `$` - Forces pattern matching only at the **end** of a line (e.g., `grep 'r$' alpha-first.txt`).
+  * `.` - Matches any single character (e.g., `r..f` matches four-letter character strings in order).
+  * `[ ]` - Matches any single character enclosed inside the brackets (e.g., `grep '[0-9]' profile.txt`).
+  * `[^ ]` - Negation; matches any single character **not** specified in the brackets (e.g., `grep '[^0-9]' profile.txt`).
+  * `*` - Matches zero or more repetitions of the preceding character (e.g., `grep 're*d' red.txt` or `grep 'r[oe]*d' red.txt`).
+* **Extended Patterns (`egrep` or `grep -E`):**
+  * `+` - Matches one or more repetitions of the previous pattern.
+  * `?` - Indicates the preceding pattern is completely optional.
+  * `{ }` - Specifies a minimum, maximum, or exact count of matches.
+  * `|` - Employs a logical "OR" alternation.
+  * `( )` - Groups patterns together.
+---## 📥 7. Input/Output RedirectionRedirection changes where data travels by managing the three standard Linux file descriptors:
+1. **STDIN (Standard Input):** Information a command receives (e.g., keyboard input like `ls ~/Documents`).
+2. **STDOUT (Standard Output):** Successful command output printed to the terminal screen (e.g., typing `ls` and seeing directory paths).
+3. **STDERR (Standard Error):** Error strings thrown by faulty executions (e.g., `ls fakefile` outputting `ls: cannot access fakefile: No such file or directory`).
 
-<pre><code>┌────────────────────────────────────────────────────────┐
-│                      User / Shell                      │
-├────────────────────────────────────────────────────────┤
-│     CLI (Bash/Sh)        │        GUI (X11/Wayland)    │
-├──────────────────────────┴─────────────────────────────┤
-│                   Linux Kernel                         │
-├────────────────────────────────────────────────────────┤
-│                     Hardware                           │
-└────────────────────────────────────────────────────────┘</code></pre>
+* `>` - Redirects output streams to **overwrite** target file contents (e.g., `cat food.txt > newfile1.txt`).
+* `>>` - Redirects output streams to **append** to the bottom of target files without destroying existing data.
+* `echo "hello"` - Prints a specific string of text directly to the stream.
+---## ⚙️ 8. Processes, Power, & Networks### Process Monitoring* `ps -e` - Displays every active process on the system.
+* `ps -ef` - Fetches an extended, detailed view of active system processes.
+  * **PID:** Process Identifier (completely unique tracking number).
+  * **TTY:** Name of the terminal window running the process.
+  * **TIME:** Amount of raw processor clock-time used by the execution.
+  * **CMD:** The exact command string that initiated the process.
+### System & Power Management* `date` - Prints current system calendar info, date, and clock time.
+* `Ctrl + C` - Sends an interrupt signal to stop running commands and bring back a clean command prompt.
+* `shutdown now` - Powers down the system immediately.
+* `shutdown +1 "Goodbye World!"` - Schedules a system shutdown in +1 minute while broadcasting a custom warning string.
+### Network Configurations* `ifconfig` - Inspects or configures local network interface properties.
+* `iwconfig` - Reviews dedicated wireless network interface properties.
+* `ping -c 4 192.168.1.2` - Transmits exactly 4 packets to test structural network path connectivity.
+---
+## 📦 9. Package Management (`apt` ecosystem)
+Used to manage software lifecycle on Debian-based Linux architectures:
+* `apt-get update` - Synchronizes your local index logs against remote package repositories.
+* `apt-cache search [keyword]` - Searches local database package descriptions for specific tools (e.g., searching for keywords like "Cow").
+* `sudo apt-get install cowsay` - Downloads and installs an explicit application package. Running `cowsay` fires up the program.
+* `sudo apt-get remove [package]` - Uninstalls software binaries from the machine.
+* `sudo apt-get purge cowsay` - Fully purges an application package along with any leftover configuration data files.
+---
+## ⌨️ 10. `vi` / `vim` Text Editor Guide
+A universal, terminal-bound visual text editor built into nearly every distribution. Open or create files by running: `vi newfile.txt`
+### Working with Editor Modes1. **Command Mode (Default):** Used to manipulate text, move around, and trigger actions. Pressing `Esc` at any point returns you here.2. **Insert Mode:** Used to type data text directly.
+3. **Ex Mode:** Bottom-line interface used for underlying filesystem tasks. Triggered by typing `:` from Command Mode.
+### Crucial Shortcuts Matrix:
+| Mode | Input Command | Result / Action |
+| :--- | :--- | :--- |
+| **Insert Mode** | `i` / `I` | Insert text *before* cursor / at the *beginning* of the current line |
+| | `a` / `A` | Insert text *after* cursor / at the *end* of the current line |
+| | `o` / `O` | Open a new blank line *after* / *before* current cursor line |
+| **Navigation** | `h` / `j` / `k` / `l` | Move cursor Left, Down, Up, Right (Arrow keys work too) |
+| | `w` / `b` | Advance one word forward / jump one word backward |
+| | `^` / `$` | Snap cursor to the very beginning / end of the current line |
+| | `gg` / `G` | Jump instantly to the first line / last line of the document |
+| | `[Number]G` | Jump directly to a targeted line number (e.g., `5G`) |
+| | `CTRL + G` | Displays the specific line number the cursor is currently resting on |
+| **Editing** | `dd` / `3dd` | Cut current line / Cut next 3 lines into system buffer clipboard |
 
-<ul>
-  <li><strong>CLI (Command-Line Interface):</strong> A deterministic, text-based input mechanism communicating directly with the OS kernel via a shell wrapper. Essential for automation scripts, secure remote access, and lower compute/memory resource consumption.</li>
-  <li><strong>GUI (Graphical User Interface):</strong> A visual abstraction layer mapping window systems (X11/Wayland) onto terminal spaces. Unnecessary for headless enterprise server deployments.</li>
-  <li><strong>Case-Sensitivity:</strong> The underlying Linux virtual filesystem layers (ext4, XFS) treat character cases distinctly at the byte level.
-    <ul>
-      <li><code>ls Documents</code> executes successfully.</li>
-      <li><code>ls documents</code> fails with a 'No such file or directory' error if the lowercase target folder does not exist.</li>
-    </ul>
-  </li>
-  <li><strong>Open Source Governance:</strong> Distributed under the <strong>GNU General Public License (GPL)</strong>, ensuring codebase audatability, open redistribution architectures, and deep infrastructure flexibility.</li>
-</ul>
+| | dw / d3w / d4h | Cut current word / Cut next 3 words / Delete 4 characters to the left |
+| | cc / cw / c3w | Change line / Change word / Change next 3 words (Deletes text + enters Insert Mode) |
+| | yy / 3yy / yw / y$ | Yank (copy) current line / 3 lines / current word / text to the end of the line |
+| | p / P | Put (paste) buffer clipboard data after / before the cursor location |
+| Searching | /pattern | Searches forward for structural text matches. (n next match, N previous match) |
+| | ?pattern | Searches backward for structural text matches. |
+| Ex Mode (:)| :w / :w filename | Write (save) modifications / Save a separate backup duplicate copy as a new filename |
+| | :w! | Force write modifications to system files |
+| | :e filename | Open a completely separate file |
+| | :q / :q! | Quit text editor / Force quit editor and discard all unsaved changes |
+| | :wq | Save current modifications and quit out of the editor completely |
 
-<h3>🧩 Command Syntax Mechanics</h3>
-<p>Linux shell parsers evaluate terminal strings according to a strict three-part hierarchical sequence:</p>
-
-<pre><code>[ Command ] ───► [ Options / Flags ] ───► [ Arguments ]</code></pre>
-
-<ol>
-  <li><strong>Command:</strong> The primary executable binary or built-in shell tool triggered (e.g., <code>ls</code>).</li>
-  <li><strong>Options/Flags:</strong> Switched modifiers prefixed with a hyphen (<code>-</code>) to alter processing behaviors (e.g., <code>-l</code>, <code>-a</code>). Multiple flags can be grouped into an efficient singular block (e.g., <code>-la</code>).</li>
-  <li><strong>Arguments:</strong> The target entities or path elements upon which the command acts (e.g., <code>/var/log</code>).</li>
-</ol>
-
-<hr>
-
-<h2>🛠️ Detailed CLI Command Matrix</h2>
-
-<h3>1. Filesystem Directory Listing (<code>ls</code>)</h3>
-<p>Exposes operational metadata records bound to object directories.</p>
-
-<ul>
-  <li><code>ls</code> — Outputs a simple layout grid of visible folder contents.</li>
-  <li><code>ls -l</code> — Invokes long-listing format, breaking down systemic security and storage allocations:</li>
-</ul>
-
-<pre><code>-rw-r--r--  1  sysadmin  sysadmin  4096  Oct 06 09:26  production.log
-▲└───┬───┘  ▲      ▲         ▲       ▲        ▲               ▲
-│    │      │      │         │       │        │               └─ Filename
-│    │      │      │         │       │        └─ Modification Timestamp
-│    │      │      │         │       └─ File Size in Bytes
-│    │      │      │         └─ Group Owner
-│    │      │      └─ User Owner
-│    │      └─ Hard Link Count
-│    └─ Permissions Triad (User, Group, Other)
-└─ File Type Indicator ( - = Regular File, d = Directory, l = Symbolic Link )</code></pre>
-
-<ul>
-  <li><code>ls -a</code> — Exposes all items including hidden dotfiles prefixed with a leading period (<code>.</code>), such as configuration scripts (<code>.bashrc</code>).</li>
-  <li><code>ls -t</code> — Orders outputs chronologically based on file modification timestamps.</li>
-  <li><code>ls -S`</code> — Orders outputs by storage capacity size footprints.</li>
-  <li><code>ls -r</code> — Reverses the current sorting hierarchy (e.g., <code>ls -laSr</code> lists smallest to largest hidden entries).</li>
-</ul>
-
-<h3>2. Navigation & Path Traversal (<code>pwd</code>, <code>cd</code>)</h3>
-<p>Provides mechanics for shifting contextual execution tracks across the filesystem tree.</p>
-
-<ul>
-  <li><code>pwd</code> — <em>Print Working Directory</em>. Evaluates and outputs the absolute shell environment coordinate tracking string from the system root.</li>
-  <li><code>cd</code> — <em>Change Directory</em>. Re-maps active working coordinate sets.
-    <ul>
-      <li><strong>Absolute Paths:</strong> Paths evaluated directly from the system root (<code>/</code>) down to a target child node, invariant of current location (e.g., <code>cd /var/log/nginx</code>).</li>
-      <li><strong>Relative Paths:</strong> Paths evaluated relative to the active working terminal coordinate context (e.g., if inside <code>/var</code>, running <code>cd log/nginx</code>).</li>
-    </ul>
-  </li>
-  <li><strong>Navigation Shortcuts:</strong>
-    <ul>
-      <li><code>..</code> — Traverses exactly one hierarchy level backward into the parent directory.</li>
-      <li><code>.</code> — References the immediate working directory context explicitly.</li>
-      <li><code>~</code> — Resolves dynamically to the logged-in user's system home directory path (<code>/home/$USER</code>).</li>
-      <li><code>-</code> — Toggles back to the previous working directory context.</li>
-    </ul>
-  </li>
-</ul>
-
-<h3>3. File Operations & Stream Analysis</h3>
-
-<h4>Content Inspection</h4>
-<ul>
-  <li><code>cat</code> — <em>Concatenate</em>. Streams complete raw data sequences from specified text files directly to standard output (<code>stdout</code>). Best reserved for short configuration profiles.</li>
-  <li><code>head -n [X]</code> — Limits standard output to the exact first <code>X</code> lines of a file stream (defaults to 10 if <code>-n</code> is omitted).</li>
-  <li><code>tail -n [X]</code> — Limits standard output to the final <code>X</code> lines of a file stream.
-    <ul>
-      <li><code>tail -f</code> — <em>Follow mode</em>. Keeps the file stream open dynamically to print incoming lines in real-time. Essential for live log troubleshooting.</li>
-    </ul>
-  </li>
-  <li><code>less</code> — Interactive terminal pager utility. Allows backward and forward scrolling navigation through large log structures without loading the entire asset block into system memory.</li>
-</ul>
-
-<h4>Data Manipulation & Block Copying</h4>
-<ul>
-  <li><code>touch</code> — Instantly creates an empty file if the target does not exist, or updates the access and modification timestamps of an existing file.</li>
-  <li><code>cp</code> — Copies file arrays across target folder routes.
-    <ul>
-      <li><code>cp -r</code> — Recursively copies directories, maintaining structural hierarchies.</li>
-      <li><em>Usage Example:</em> <code>cp /etc/passwd .</code> (Copies system data into the active working directory).</li>
-    </ul>
-  </li>
-  <li><code>mv</code> — Moves files across filesystem endpoints. Also performs atomic inline renames when destination targets remain within localized directories.</li>
-  <li><code>rm</code> — Permanently purges standard files from the filesystem index.
-    <ul>
-      <li><code>rm -r</code> — Recursively deletes directories and all nested children data structures.</li>
-      <li><code>rm -f`</code> — Overrides interactive confirmations, forcing immediate elimination. <strong>Warning:</strong> Irreversible in standard environments.</li>
-    </ul>
-  </li>
-  <li><code>dd</code> — Low-level, block-by-block bitstream duplicator. Used for bare-metal backups, partition cloning, and master boot record isolation.
-    <ul>
-      <li><em>Syntax Parameters:</em> <code>if=</code> (Input Device), <code>of=</code> (Output Device Target), <code>bs=</code> (Block Size), <code>count=</code> (Total blocks).</li>
-      <li><em>Production Command:</em> <code>sudo dd if=/dev/sda of=/backup/disk_image.raw bs=4M</code></li>
-    </ul>
-  </li>
-</ul>
-
-<hr>
-
-<h2>🔐 Administrative Privilege & Access Control</h2>
-
-<h3>🛂 Identity Switching Mechanics</h3>
-<p>Linux maintains strict isolation between standard user profiles and the administrative root operating layer.</p>
-
-<ul>
-  <li><code>su</code> — <em>Switch User</em>. Switches the active shell context to an alternate profile. Requires target user's password.</li>
-  <li><code>su -</code> (or <code>su -l</code>) — Invokes a complete login shell transformation. Purges current environmental variables and instantiates the target profile's explicit environment variables and configurations.</li>
-  <li><code>sudo</code> — <em>Superuser Do</em>. Executes a single target operation utilizing the elevated privilege scopes of the root environment based on configurations inside the <code>/etc/sudoers</code> safety policy layout. Requires the <em>current</em> user's password, reducing shared credential risks.</li>
-  <li><code>exit</code> — Terminates the active sub-shell instance, dropping the session back down to the preceding profile prompt level.</li>
-</ul>
-
-<h3>📄 Permission Matrix Layout & Modification</h3>
-<p>File attributes map directly to a strict access matrix split among three functional entities: <strong>User (u)</strong>, **Group (g)**, and **Other (o)**.</p>
-
-<h4>Octal vs. Symbolic Permission Architecture</h4>
-<p>Permissions translate between alphabetic characters and binary weight positions:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Permission</th>
-      <th>Character</th>
-
-Octal Calculation Matrix Example:
-r w x │ r - x │ r - -
-4+2+1 │ 4+0+1 │ 4+0+0
-(7) │ (5) │ (4) --> Resulting Mode: 754
-Modifying Permissions (chmod, chown)
-
-chmod — Change Mode. Adjusts security flags on assets.
-
-Symbolic Assignment: chmod g+w,o-r security_profile.txt
-Octal Assignment: chmod 755 deployment.sh
-
-
-chown — Change Owner. Assigns alternative user and group operational ownership layers.
-
-Production Command: sudo chown root:sysadmin infrastructure.conf
-
-
-🔍 Text Filtering & Stream Manipulation (grep)
-The grep (Global Regular Expression Print) engine filters data streams to locate and output explicit patterns parsed out of standard input or plain-text files.
-Usage Example: grep 'sysadmin' /etc/passwd (Extracts target identity parameters from system user records).
-grep -i — Skips case distinction constraints entirely during scanning sweeps.
-grep -v — Inverts the filter, returning only lines that do not match the pattern.
-grep -E — Activates Extended Regular Expression features (equivalent to using egrep).
-🧩 Regular Expression (RegEx) Reference Matrix
-⚡ System Administration & Diagnostics
-🛑 System Lifecycle & Foreground Control
-
-shutdown now — Signals immediate execution of systemic operational shifts, safely halting services and cutting mainboard power.
-shutdown +1 "Emergency Maintenance Inbound" — Broadcasts system-wide warning banners to active terminals before enforcing a 1-minute delayed drop cycle.
-Ctrl + C — Broadcasts an explicit SIGINT (Signal Interrupt) vector to active foreground processes, terminating run states immediately.
-date — Standard output format showing current system calendar and timezone metrics.
-🌐 Network Diagnostics & Interface Topology
-
-ifconfig — Outputs detailed structural mapping parameters covering network interfaces, IP bindings, and MAC IDs.
-iwconfig — Dedicated wireless interface utility exposing link qualities and radio configurations.
-ping -c 4 1.1.1.1 — Dispatches exactly 4 network diagnostic ICMP Echo Request frames to verify endpoint connectivity.
-⚙️ Process Audits & Resource Tracking (ps)
-Exposes detailed operational allocation records mapping active kernel processes back to tracking IDs.
-Process Table Structure Metadata Fields:
-
-PID: Process Identifier. The discrete numerical tracking address assignment key used by the kernel.
-TTY: TeleTypewriter. Identifies the explicit control terminal channel managing the operation.
-TIME: Total cumulative execution processor utilization clock blocks.
-CMD: The specific command binary instantiation call string that triggered the process.
-
-
-ps — Standard display loop showing active tasks running inside the user's current terminal instance.
-ps -e — Pulls data strings mapping every active runtime execution thread throughout the system namespace.
-ps -ef — Forces full details layout parsing (-f) across all background processes.
-
-
-<FollowUp>
-Check attached photos for reference </FollowUp>
 
 
