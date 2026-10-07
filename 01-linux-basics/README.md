@@ -178,3 +178,15 @@ A universal, terminal-bound visual text editor built into nearly every distribut
 | | `[Number]G` | Jump directly to a targeted line number (e.g., `5G`) |
 | | `CTRL + G` | Displays the specific line number the cursor is currently resting on |
 | **Editing** | `dd` / `3dd` | Cut current line / Cut next 3 lines into system buffer clipboard |
+
+| | dw / d3w / d4h | Cut current word / Cut next 3 words / Delete 4 characters to the left |
+| | cc / cw / c3w | Change line / Change word / Change next 3 words (Deletes text + enters Insert Mode) |
+| | yy / 3yy / yw / y$ | Yank (copy) current line / 3 lines / current word / text to the end of the line |
+| | p / P | Put (paste) buffer clipboard data after / before the cursor location |
+| Searching | /pattern | Searches forward for structural text matches. (n next match, N previous match) |
+| | ?pattern | Searches backward for structural text matches. |
+| Ex Mode (:)| :w / :w filename | Write (save) modifications / Save a separate backup duplicate copy as a new filename |
+| | :w! | Force write modifications to system files |
+| | :e filename | Open a completely separate file |
+| | :q / :q! | Quit text editor / Force quit editor and discard all unsaved changes |
+| | :wq | Save current modifications and quit out of the editor completely |
