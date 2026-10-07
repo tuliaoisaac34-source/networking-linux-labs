@@ -177,16 +177,20 @@ A universal, terminal-bound visual text editor built into nearly every distribut
 | | `gg` / `G` | Jump instantly to the first line / last line of the document |
 | | `[Number]G` | Jump directly to a targeted line number (e.g., `5G`) |
 | | `CTRL + G` | Displays the specific line number the cursor is currently resting on |
-
-| | dw / d3w / d4h | Cut current word / Cut next 3 words / Delete 4 characters to the left |
-| | cc / cw / c3w | Change line / Change word / Change next 3 words (Deletes text + enters Insert Mode) |
-| | yy / 3yy / yw / y$ | Yank (copy) current line / 3 lines / current word / text to the end of the line |
-| | p / P | Put (paste) buffer clipboard data after / before the cursor location |
-| Searching | /pattern | Searches forward for structural text matches. (n next match, N previous match) |
-| | ?pattern | Searches backward for structural text matches. |
-| Ex Mode (:)| :w / :w filename | Write (save) modifications / Save a separate backup duplicate copy as a new filename |
-| | :w! | Force write modifications to system files |
-| | :e filename | Open a completely separate file |
-| | :q / :q! | Quit text editor / Force quit editor and discard all unsaved changes |
-| |:wq | Save current modifications and quit out of the editor completely |
 | **Editing** | `dd` / `3dd` | Cut current line / Cut next 3 lines into system buffer clipboard |
+| dd / [Number]dd | Cut current line / Cut multiple lines (e.g., 3dd) |
+| dw / d3w / d4h | Cut current word / Cut next 3 words / Delete 4 characters to the left |
+| cc / cw / c3w | Change line / Change word / Change next 3 words (Deletes text + enters Insert Mode) |
+| yy / 3yy / yw / y$ | Yank (copy) current line / 3 lines / current word / text to the end of the line |
+| p / P | Put (paste) buffer clipboard data after / before the cursor location |
+Searching Strings
+Input Command	Result / Action
+/pattern	Searches forward for text matches (n for next match, N for previous)
+?pattern	Searches backward for structural text matches
+Ex Mode Options (Type : first)
+Input Command	Result / Action
+:w / :w filename	Save modifications / Save a copy as a new filename
+:w!	Force write modifications to system files
+:e filename	Open a completely separate file
+:q / :q!	Quit text editor / Force quit editor and discard all unsaved changes
+:wq	Save current modifications and quit out of the editor completely
