@@ -1,0 +1,75 @@
+# Linux Basics 🐧
+
+Welcome to my Linux Basics repository! This project serves as a structured collection of my core Linux system administration notes, command-line fundamentals, and practical examples.
+
+Everything documented here represents fundamental competencies required for managing environments, auditing file systems, and manipulating data via the Command-Line Interface (CLI).
+
+---
+
+## 🧭 1. Navigation & Pathing Basics
+Linux is completely case-sensitive (e.g., `ls Documents` works, but `ls documents` will throw an error).
+
+* **pwd** – Prints the exact working directory path you are currently standing in.
+* **cd** – Changes directories to move around the file system.
+* **Absolute Paths:** Starts from the absolute root directory (e.g., `cd /home/sysadmin`).
+* **Relative Paths:** Starts from where you are right now.
+* **.`** – Refers to the current directory.
+* **..** – Moves up one level to the parent directory.
+* **~** – Shortcut to go straight back to your home directory.
+
+---
+
+## 📂 2. File Listing & Metadata (ls)
+The `ls` command is used for listing directory contents. Combining it with specific flags reveals deep system metadata:
+
+* **ls -a** – Lists all entries, including hidden files (any file starting with a dot `.`).
+* **ls -l** – Long listing format showing file types, permissions, sizes, and owners.
+* **ls -t** – Sorts the results by timestamp (newest files show first).
+* **ls -S** – Sorts the output by file size (largest files first).
+* **ls -r** – Reverses the sorting direction of the output.
+
+### Understanding ls -l Output Syntax
+When running a long listing, the metadata fields map out exactly like this:
+
+```text
+-rw-r--r--     1    sysadmin    sysadmin      647      Dec 20 2017    hello.sh
+[File Type]        [Owner]      [Group]    [Size]*     [Timestamp]   [Filename]
+[Permissions]
+```
+*\*Note: The raw file size in bytes always sits directly before the modification date and time timestamp.*
+
+---
+
+## 🛡️ 3. Administrative Access & Account Security
+* **su** – Switches user context to temporarily act as a different user.
+* **su -**, **su -l**, or **su --login** – Fully logs in as the root administrative user with a clean shell environment.
+* **sudo** – Executes a single, special task with elevated administrative privileges (Superuser Do) without changing your permanent user identity context.
+
+---
+
+## 🧪 4. Week 1 Mini Lab: File Management Workspace
+
+### Objective
+Create a structured directory layout in the Linux file system and practice moving, copying, renaming, and auditing files using the Command-Line Interface (CLI).
+
+### Workspace Setup
+```bash
+# Create the parent lab directory and nested subdirectories all at once
+mkdir -p ~/october-lab/{documents,logs,backup}
+```
+
+### Tasks Performed
+1. **Directory Navigation:** Used `cd ~/october-lab` to enter the workspace and verified the position using `pwd`.
+2. **File Creation:** Used `touch documents/report.txt logs/system.log` to generate mock data files.
+3. **Data Inspection:** Read file outputs using `cat`, monitored lines using `head`/`tail`, and scrolled through configurations using `less`.
+4. **Data Redundancy:** Copied files into the backup directory using `cp documents/report.txt backup/report_bak.txt`.
+5. **File Maintenance:** Renamed files using `mv` and deleted unneeded files using `rm`.
+
+### 📸 Lab Evidence
+* **Screenshot 1 — Workspace Tree:** *(Add your image here showing the output of running `ls -R ~/october-lab` to prove your folders exist)*
+* **Screenshot 2 — Command Execution:** *(Add your image showing your file copy, move, and removal commands running successfully without errors)*
+
+### 🧠 What I Learned
+* **Case Sensitivity:** Linux treats `Documents` and `documents` as entirely separate folders. Missing a capital letter will drop an error.
+* **The Power of Relative Paths:** Using `.` and `..` allows for much faster file management compared to typing out long absolute paths like `/home/sysadmin/...` every single time.
+
