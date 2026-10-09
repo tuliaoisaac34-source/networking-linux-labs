@@ -75,13 +75,19 @@ ls -l hello.sh
 ```
 
 ### 📸 Lab Evidence
-* **Screenshot 1 — Context Elevation:** *(Add an image showing your `su -` command switching to the root terminal profile)*
-* **Screenshot 2 — Ownership Alteration:** *(Add an image showing your `chown` command modifying the file owner string successfully)*
-* **Screenshot 3 — Symbolic Permissions Output:** *(Add an image showing the output of `ls -l hello.sh` confirming your updated permission attributes)*
 
-* <img width="432" height="113" alt="image" src="https://github.com/user-attachments/assets/526c7405-3df6-459e-9605-ecbe3ede262e" />
-<img width="440" height="158" alt="image" src="https://github.com/user-attachments/assets/2b7aa16c-1c43-4eb2-820e-0856db451514" />
-<img width="455" height="190" alt="image" src="https://github.com/user-attachments/assets/c3f42f22-53d0-49dd-b86c-c8e2139e1191" />
+* **Screenshot 1 — Context Elevation**
+  * Description: Successfully escalated user privileges from the unprivileged `sysadmin` account to the `root` administrative environment using the `su -` command.
+  * <img width="432" height="113" alt="Context Elevation via su command" src="https://github.com/user-attachments/assets/526c7405-3df6-459e-9605-ecbe3ede262e" />
+
+* **Screenshot 2 — Troubleshooting Path Traversal**
+  * Description: Encountered a `No such file or directory` error due to a missing trailing plural character in the targeted directory path (`Document` vs. `Documents`).
+  * <img width="440" height="158" alt="Path Traversal Error and Troubleshooting" src="https://github.com/user-attachments/assets/2b7aa16c-1c43-4eb2-820e-0856db451514" />
+
+* **Screenshot 3 — Final Verification & Symbolic Permissions Output**
+  * Description: Verified successful transfer of ownership to `root` and validated the isolated symbolic permission bits (`-rwxr----`) via `ls -l hello.sh`.
+  * <img width="455" height="190" alt="Symbolic Permissions Verification Output" src="https://github.com/user-attachments/assets/c3f42f22-53d0-49dd-b86c-c8e2139e1191" />
+
 
 ### 🧠 What I Learned
 * **Symbolic Isolation:** I learned how to use targets like `u` and `o` to selectively update file attributes without risking altering or wiping out the rest of the existing permission string.
