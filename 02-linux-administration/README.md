@@ -1,12 +1,11 @@
-
-Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It focuses on the mechanics of administrative access, symbolic permission modifications, file ownership, input filtering, and tracking active system processes.
+Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It covers administrative access, symbolic permission changes, file ownership, input filtering, and tracking active system processes.
 
 ---
 
 ## 👤 1. Administrative Access & User Management
 Operating safely as a system administrator requires balancing unprivileged tasks with elevated execution contexts.
 
-* **su** – Allows you to temporarily act as a different user.
+* **su** – Allows you to act as a different user temporarily.
 * **su -**, **su -l**, or **su --login** – Fully logs in as the root administrative user, generating a fresh login shell environment.
 * **exit** – Logs out of the current switched user session and returns you to your previous shell command prompt.
 * **sudo** – Executes a single, special task with elevated administrative privileges without changing your permanent user context.
@@ -81,7 +80,8 @@ ls -l hello.sh
 * **Screenshot 3 — Symbolic Permissions Output:** *(Add an image showing the output of `ls -l hello.sh` confirming your updated permission attributes)*
 
 * <img width="432" height="113" alt="image" src="https://github.com/user-attachments/assets/526c7405-3df6-459e-9605-ecbe3ede262e" />
-<img width="432" height="113" alt="image" src="https://github.com/user-attachments/assets/ce85f389-9425-41a3-a853-ada31ced972b" />
+<img width="440" height="158" alt="image" src="https://github.com/user-attachments/assets/2b7aa16c-1c43-4eb2-820e-0856db451514" />
+<img width="455" height="190" alt="image" src="https://github.com/user-attachments/assets/c3f42f22-53d0-49dd-b86c-c8e2139e1191" />
 
 ### 🧠 What I Learned
 * **Symbolic Isolation:** I learned how to use targets like `u` and `o` to selectively update file attributes without risking altering or wiping out the rest of the existing permission string.
