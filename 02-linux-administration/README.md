@@ -1,4 +1,4 @@
-# Linux Administration ⚙️
+<img width="432" height="113" alt="image" src="https://github.com/user-attachments/assets/ce85f389-9425-41a3-a853-ada31ced972b" /># Linux Administration ⚙️
 
 Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It focuses on the mechanics of administrative access, symbolic permission modifications, file ownership, input filtering, and tracking active system processes.
 
@@ -80,6 +80,9 @@ ls -l hello.sh
 * **Screenshot 1 — Context Elevation:** *(Add an image showing your `su -` command switching to the root terminal profile)*
 * **Screenshot 2 — Ownership Alteration:** *(Add an image showing your `chown` command modifying the file owner string successfully)*
 * **Screenshot 3 — Symbolic Permissions Output:** *(Add an image showing the output of `ls -l hello.sh` confirming your updated permission attributes)*
+
+* <img width="432" height="113" alt="image" src="https://github.com/user-attachments/assets/526c7405-3df6-459e-9605-ecbe3ede262e" />
+
 
 ### 🧠 What I Learned
 * **Symbolic Isolation:** I learned how to use targets like `u` and `o` to selectively update file attributes without risking altering or wiping out the rest of the existing permission string.
