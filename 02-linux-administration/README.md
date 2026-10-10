@@ -90,30 +90,37 @@ When files or process layouts are too long, you can pass regular expression patt
 
 ---
 
-## 🧪 5. Week 2 Mini Lab: User and Directory Access
+## 🧪 5. Week 2 Mini Labs & Practical Evidence
 
-### Scenario Goal
-*"Create a secure Linux file environment where a specific file's ownership is elevated to root, and permissions are modified symbolically to restrict access."*
+### 🛡️ Mini Lab 1: User and Directory Access Control
+**Scenario Goal:** Create a secure Linux file environment where a specific file's ownership is elevated to root, and permissions are modified symbolically to restrict access.
 
-### Step-by-Step Lab Execution
 ```bash
-# 1. Elevate user context to the root user environment to make changes
+# 1-6. Elevate context, navigate to workspace, change file ownership to root, modify symbolic permissions (add user execute, remove others read), and verify via ls -l hello.sh
 su -
-
-# 2. Navigate to your user workspace directory
 cd /home/sysadmin/Documents
-
-# 3. Alter file ownership from sysadmin over to root
 sudo chown root hello.sh
-
-# 4. Symbolically add execute permissions for the user owner
 chmod u+x hello.sh
-
-# 5. Symbolically strip read permissions away from outside 'others'
 chmod o-r hello.sh
-
-# 6. Verify your updated ownership and permission metadata string
 ls -l hello.sh
+```
+
+#### 📸 Lab 1 Evidence & Architecture Breakdown
+*   **Context Elevation & Verification:** Escalated to root using `su -`, corrected a path traversal error (`Document` to `Documents`), and verified the final symbolic permission bits (**`-rwxr----`**) via `ls -l hello.sh`.
+
+---
+
+### 💼 Mini Lab 2: Department Directory Isolation & Auditing
+**Scenario Goal:** Create a restricted project directory for a new Finance Department employee, manage role-based user access groups, and audit active core system daemons.
+
+```bash
+# 1-6. Elevate context, configure finance group/user, provision /finance_data with absolute permissions (770), and audit the cron daemon status and process tree
+su -
+groupadd finance && useradd -m fina_user && usermod -aG finance fina_user
+mkdir /finance_data && chown root:finance /finance_data && chmod 770 /finance_data
+ls -ld /finance_data
+service cron status
+ps -ef | grep cron
 ```
 
 ### 📸 Lab Evidence
@@ -132,6 +139,8 @@ ls -l hello.sh
   * <img width="455" height="190" alt="Symbolic Permissions Verification Output" src="https://github.com/user-attachments/assets/c3f42f22-53d0-49dd-b86c-c8e2139e1191" />
 
 
-### 🧠 What I Learned
-* **Symbolic Isolation:** I learned how to use targets like `u` and `o` to selectively update file attributes without risking altering or wiping out the rest of the existing permission string.
-* **Metadata Fields:** Long display outputs are crucial for validation; reading the owner and group names sitting directly before the file size and timestamp helps confirm identity changes immediately.
+### 🧠 Environment Troubleshooting Insights (Architectural Analysis)
+Key sandboxing constraints and their solutions in the containerized environment included:
+*   **Missing Package Mirrors (`ufw`):** Bypassed network repository limitations by pivoting to pre-installed internal core daemons like `cron`.
+*   **`systemctl` Unavailable:** Adapted to the lightweight initialization framework by using legacy `service` syntax instead of `systemd`.
+*   **Command Syntax Errors (`ps-ef`):** Resolved token parsing errors by ensuring proper space delimiters in `ps -ef`.
