@@ -124,7 +124,8 @@ ls -l hello.sh
 
 * **Screenshot 2 — Troubleshooting Path Traversal**
   * Description: Encountered a `No such file or directory` error due to a missing trailing plural character in the targeted directory path (`Document` vs. `Documents`).
-  * <img width="440" height="158" alt="Path Traversal Error and Troubleshooting" src="https://github.com/user-attachments/assets/2b7aa16c-1c43-4eb2-820e-0856db451514" />
+  * <img width="564" height="481" alt="image" src="https://github.com/user-attachments/assets/442650a4-c1ec-475a-b497-5bd6cf10a884" />
+
 
 * **Screenshot 3 — Final Verification & Symbolic Permissions Output**
   * Description: Verified successful transfer of ownership to `root` and validated the isolated symbolic permission bits (`-rwxr----`) via `ls -l hello.sh`.
