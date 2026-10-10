@@ -127,13 +127,11 @@ ps -ef | grep cron
 
 ### 📸 Lab Evidence
 
-#### Screenshot 1 — Directory Isolation Success
-* **Description:** Successfully provisioned the `/finance_data` workspace directory, updated structural ownership over to `root:finance`, and verified strict mode bits via numeric notation.
-* **Output Verified:** `drwxrwx--- 2 root finance 6 Oct 10 02:50 /finance_data`
+#### Screenshot 1 — <img width="595" height="465" alt="image" src="https://github.com/user-attachments/assets/d084588e-9bab-475a-b323-e18b95aa12a9" />
 
-#### Screenshot 2 — Process Tree Audit Success
-* **Description:** Successfully tracked the active runtime signature of the `cron` automation daemon through the system process tree after navigating environment initialization limits.
-* **Output Verified:** `root   37   1  0 02:11 ?   00:00:00 /usr/sbin/cron`
+
+#### Screenshot 2 —<img width="573" height="363" alt="image" src="https://github.com/user-attachments/assets/98a13578-d807-480c-b7cc-21ae3c4019f2" />
+
 
 ---
 
