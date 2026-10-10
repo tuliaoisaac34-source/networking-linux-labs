@@ -1,4 +1,4 @@
-Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It covers administrative access, symbolic permission changes, file ownership, input filtering, and tracking active system processes.
+Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It covers administrative access, symbolic and numeric permission modifications, file and group ownership configurations, input filtering, and tracking active system processes.
 
 ---
 
@@ -9,27 +9,65 @@ Operating safely as a system administrator requires balancing unprivileged tasks
 * **su -**, **su -l**, or **su --login** – Fully logs in as the root administrative user, generating a fresh login shell environment.
 * **exit** – Logs out of the current switched user session and returns you to your previous shell command prompt.
 * **sudo** – Executes a single, special task with elevated administrative privileges without changing your permanent user context.
-* **passwd** – Sets or updates user account passwords.
+* **passwd** – Sets or updates user account passwords (e.g., `passwd fina_user`).
+* **useradd** – Creates a brand new user account on the local system (e.g., `useradd -m fina_user`).
+* **groupadd** – Establishes a new group container for security and access management (e.g., `groupadd finance`).
+* **usermod** – Modifies an existing user's system attributes (e.g., `usermod -aG finance fina_user` appends a user to a supplementary group).
+* **id** – Displays real-time user and group IDs (UID/GID) for a specified account to confirm active memberships.
 * **passwd -S sysadmin** – Displays password status information. 
-  * *Syntax break down:* User name (`sysadmin`), PW status (`P` = usable, `L` = locked, `NP` = no password), last change date, minimum days before changes (`0`), maximum days before expiry (`99999`), and warning days (`7`).
+
+| Metadata Field | Example Value | Description |
+| :--- | :--- | :--- |
+| **User Name** | `sysadmin` | The target user account being audited. |
+| **Password Status** | `P` | Account status indicator (`P` = usable, `L` = locked, `NP` = no password). |
+| **Last Change Date** | *Date* | The exact calendar day the account password was last modified. |
+| **Minimum Days** | `0` | Minimum number of days required before a password can be changed again. |
+| **Maximum Days** | `99999` | Maximum days of validity before the system forces a password change. |
+| **Warning Days** | `7` | Days ahead of expiration that the system begins prompting the user to update. |
 
 ---
 
-## 🛡️ 2. File Ownership & Permissions (Symbolic Method)
-Every file and directory layout displays a strict ownership metadata string when evaluated using long listing commands.
+## 🛡️ 2. File Ownership & Permissions
 
-* **chown** – Changes the user owner of a file (e.g., `sudo chown root hello.sh`).
-* **chmod** – Modifies modes of access. Using the **Symbolic Method**, you change one set of permissions at a time using targets (**u** = user, **g** = group, **o** = other, **a** = all) and operators (**+** = add, **-** = remove, **=** = specify exact match).
-  * Permissions are evaluated across three primary actions: **Read** (`r`), **Write** (`w`), and **Execute** (`x`).
-  * Example: `chmod u+x hello.sh` adds execution rights specifically to the user owner.
+Every file and directory layout displays a strict ownership metadata string when evaluated using long listing commands (`ls -l` or `ls -ld`).
+
+### Access Modification Methods
+
+| Method | Syntax Approach | Core Behavior & Mechanics |
+| :--- | :--- | :--- |
+| **Symbolic Method** | `chmod u+x hello.sh`<br>`chmod o-r hello.sh` | Modifies one specific set of permissions at a time using target letters, explicit operators, and specific action flags. |
+| **Absolute (Numeric) Method** | `chmod 770 /finance_data` | Replaces character flags with a 3-digit octal number shortcut representing the entire permission string configuration all at once. |
+
+### Permissions Structural Breakdown
+
+| Target Scope | Operator | Action Flag | Numeric Weight | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **u** (User/Owner) | **+** (Add Access) | **r** (Read) | `4` | View file text or list folder directory contents. |
+| **g** (Group Owner) | **-** (Remove Access) | **w** (Write) | `2` | Modify file contents or create/delete files inside a folder. |
+| **o** (Others/Public) | **=** (Exact Match) | **x** (Execute) | `1` | Run a script/program binary or cross through a folder path. |
+| **a** (All Identities) | *N/A* | *N/A* | `0` | Represents zero access (`---`) when no permissions are assigned. |
+
+* **chown** – Changes file or folder user ownership. It can reassign both user and group parameters simultaneously when combined with a colon identifier (e.g., `chown root:finance /finance_data`).
 
 ---
 
-## ⚙️ 3. Process Auditing & Power Controls
-Administrators use process utilities to keep tabs on what programs are consuming resources and to safely transition machine states.
+## ⚙️ 3. Process Auditing, Package & Power Controls
+Administrators use system utilities to audit processes, manage software packages, control background services, and safely transition machine states.
 
+### Process & Service Control Reference
 * **ps -e** – Displays a standard static list of every active running process on the system.
 * **ps -ef** – Generates an extended layout displaying more details (such as unique Process Identifiers / PIDs, TTY, running time, and the command that started the process).
+* **apt / dnf** – System package managers used to download, update, install, or purge binary applications from remote software repositories (e.g., `apt install ufw -y`).
+* **systemctl** – The central framework interface used to control system daemons and background processes.
+
+### System Controller Actions
+
+| Control Parameter | Practical Syntax Examples | Functional Outcome |
+| :--- | :--- | :--- |
+| **start** | `systemctl start ufw` | Boots the application engine into memory instantly for the active session. |
+| **enable** | `systemctl enable ufw` | Configures the system initialization scripts to launch the service automatically at boot. |
+| **status** | `systemctl status ufw` | Pulls service logs and prints runtime indicators (`active (running)` or `inactive (dead)`). |
+
 * **shutdown now** – Instantly shuts down the machine from the root command context.
 * **shutdown +1 "Goodbye World!"** – Schedules an automated system shutdown in 1 minute and broadcasts a custom warning message to all open terminal users.
 
@@ -39,12 +77,16 @@ Administrators use process utilities to keep tabs on what programs are consuming
 When files or process layouts are too long, you can pass regular expression patterns to isolate lines matching specific strings.
 
 * **grep 'root' /etc/passwd** – Searches files and outputs lines matching the target word.
-* **^** – Restricts the match to the absolute beginning of a line (e.g., `grep '^root' /etc/passwd`).
-* **\$** – Restricts the match to the absolute end of a line (e.g., `grep 'r$' alpha-first.txt`).
-* **.** – Matches any one single character (e.g., `grep 'r..f' red.txt`).
-* **[ ]** – Matches any one specified character from a list (e.g., `grep '[0-9]' profile.txt`).
-* **[^ ]** – Matches anything *not* containing the specified character (e.g., `grep '[^0-9]' profile.txt`).
-* ***** – Matches zero or more occurrences of the previous character.
+
+| Regex Metacharacter | Functional Syntax Pattern | Targeted Evaluation Rule |
+| :--- | :--- | :--- |
+| **`^`** | `grep '^root' /etc/passwd` | Restricts the string match to the absolute beginning of a line. |
+| **`$`** | `grep 'r$' alpha-first.txt` | Restricts the string match to the absolute end of a line. |
+| **`.`** | `grep 'r..f' red.txt` | Acts as a wild-card matching exactly one single character of any type. |
+| **`[ ]`** | `grep '[0-9]' profile.txt` | Matches any single character specified inside the literal bracket list. |
+| **`[^ ]`** | `grep '[^0-9]' profile.txt` | Inverts the match, isolating lines containing characters *not* in the brackets. |
+| **`*`** | `grep 'ab*' text.txt` | Matches zero or more continuous occurrences of the preceding character. |
+
 
 ---
 
