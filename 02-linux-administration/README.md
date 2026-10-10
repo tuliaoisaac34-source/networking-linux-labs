@@ -127,10 +127,20 @@ ps -ef | grep cron
 
 ### 📸 Lab Evidence
 
-#### Screenshot 1 — <img width="595" height="465" alt="image" src="https://github.com/user-attachments/assets/d084588e-9bab-475a-b323-e18b95aa12a9" />
+#### Screenshot 1 — Group Provisioning & Absolute Directory Isolation
+<img width="595" height="465" alt="image" src="https://github.com/user-attachments/assets/d084588e-9bab-475a-b323-e18b95aa12a9" />
 
+*   **Description:** Successfully elevated privileges to `root` using `su -`, provisioned the `finance` group, created `fina_user`, and verified group membership mapping via the `id` utility. 
+*   **Key Validation Detail:** Created `/finance_data` and successfully isolated access using absolute permissions (`chmod 770`), yielding the precise target metadata string **`drwxrwx---`**.
+*   **Troubleshooting Note:** Handles path typos seamlessly (`/finance` space errors and `/fincance_data` spelling variations) on the command line before applying the correct structural path configurations.
 
-#### Screenshot 2 —<img width="573" height="363" alt="image" src="https://github.com/user-attachments/assets/98a13578-d807-480c-b7cc-21ae3c4019f2" />
+#### Screenshot 2 — Process Tree Tracking & Init System Discovery
+<img width="573" height="363" alt="image" src="https://github.com/user-attachments/assets/98a13578-d807-480c-b7cc-21ae3c4019f2" />
+
+*   **Description:** Audited the system's process landscape and background automation daemons using the legacy `service` initialization system wrapper.
+*   **Key Validation Detail:** Successfully traced the system process tree using `ps -ef | grep cron`, isolating the running background automation scheduler (`cron`) executing safely under **PID 37**.
+*   **Troubleshooting Note:** Documented sandbox-specific environment limitations where network package deployment (`iptables`) is decoupled, and rectified a standard delimiter spacing issue (`ps-ef` vs `ps -ef`) to fetch process tables directly.
+
 
 
 ---
