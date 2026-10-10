@@ -90,57 +90,58 @@ When files or process layouts are too long, you can pass regular expression patt
 
 ---
 
-## 🧪 5. Week 2 Mini Labs & Practical Evidence
+## 🧪 Week 2 Mini Lab 2: Department Directory Isolation & Auditing
 
-### 🛡️ Mini Lab 1: User and Directory Access Control
-**Scenario Goal:** Create a secure Linux file environment where a specific file's ownership is elevated to root, and permissions are modified symbolically to restrict access.
-
-```bash
-# 1-6. Elevate context, navigate to workspace, change file ownership to root, modify symbolic permissions (add user execute, remove others read), and verify via ls -l hello.sh
-su -
-cd /home/sysadmin/Documents
-sudo chown root hello.sh
-chmod u+x hello.sh
-chmod o-r hello.sh
-ls -l hello.sh
-```
-
-#### 📸 Lab 1 Evidence & Architecture Breakdown
-*   **Context Elevation & Verification:** Escalated to root using `su -`, corrected a path traversal error (`Document` to `Documents`), and verified the final symbolic permission bits (**`-rwxr----`**) via `ls -l hello.sh`.
+### 🎯 Scenario Goal
+"Create a restricted project directory for a new Finance Department employee, manage role-based user access groups, and audit active core system daemons inside a containerized sandbox environment."
 
 ---
 
-### 💼 Mini Lab 2: Department Directory Isolation & Auditing
-**Scenario Goal:** Create a restricted project directory for a new Finance Department employee, manage role-based user access groups, and audit active core system daemons.
+### 💻 Step-by-Step Lab Execution
 
 ```bash
-# 1-6. Elevate context, configure finance group/user, provision /finance_data with absolute permissions (770), and audit the cron daemon status and process tree
+# 1. Elevate user context to the root user space
 su -
-groupadd finance && useradd -m fina_user && usermod -aG finance fina_user
-mkdir /finance_data && chown root:finance /finance_data && chmod 770 /finance_data
+
+# 2. Create the target group and user profile
+groupadd finance
+useradd -m fina_user
+usermod -aG finance fina_user
+
+# 3. Provision the directory and assign absolute permissions
+mkdir /finance_data
+chown root:finance /finance_data
+chmod 770 /finance_data
+
+# 4. Verify the isolated folder structure and mode string
 ls -ld /finance_data
+
+# 5. Audit active pre-installed core background services
 service cron status
+
+# 6. Query the system process tree to locate the running daemon
 ps -ef | grep cron
 ```
 
+---
+
 ### 📸 Lab Evidence
 
-* **Screenshot 1 — Context Elevation**
-  * Description: Successfully escalated user privileges from the unprivileged `sysadmin` account to the `root` administrative environment using the `su -` command.
-  * <img width="432" height="113" alt="Context Elevation via su command" src="https://github.com/user-attachments/assets/526c7405-3df6-459e-9605-ecbe3ede262e" />
+#### Screenshot 1 — Directory Isolation Success
+* **Description:** Successfully provisioned the `/finance_data` workspace directory, updated structural ownership over to `root:finance`, and verified strict mode bits via numeric notation.
+* **Output Verified:** `drwxrwx--- 2 root finance 6 Oct 10 02:50 /finance_data`
 
-* **Screenshot 2 — Troubleshooting Path Traversal**
-  * Description: Encountered a `No such file or directory` error due to a missing trailing plural character in the targeted directory path (`Document` vs. `Documents`).
-  * <img width="564" height="481" alt="image" src="https://github.com/user-attachments/assets/442650a4-c1ec-475a-b497-5bd6cf10a884" />
+#### Screenshot 2 — Process Tree Audit Success
+* **Description:** Successfully tracked the active runtime signature of the `cron` automation daemon through the system process tree after navigating environment initialization limits.
+* **Output Verified:** `root   37   1  0 02:11 ?   00:00:00 /usr/sbin/cron`
 
-
-* **Screenshot 3 — Final Verification & Symbolic Permissions Output**
-  * Description: Verified successful transfer of ownership to `root` and validated the isolated symbolic permission bits (`-rwxr----`) via `ls -l hello.sh`.
-  * <img width="455" height="190" alt="Symbolic Permissions Verification Output" src="https://github.com/user-attachments/assets/c3f42f22-53d0-49dd-b86c-c8e2139e1191" />
-
+---
 
 ### 🧠 Environment Troubleshooting Insights (Architectural Analysis)
-Key sandboxing constraints and their solutions in the containerized environment included:
-*   **Missing Package Mirrors (`ufw`):** Bypassed network repository limitations by pivoting to pre-installed internal core daemons like `cron`.
-*   **`systemctl` Unavailable:** Adapted to the lightweight initialization framework by using legacy `service` syntax instead of `systemd`.
-*   **Command Syntax Errors (`ps-ef`):** Resolved token parsing errors by ensuring proper space delimiters in `ps -ef`.
+During execution, strict sandboxing constraints within the NDG Linux Unhatched Docker container environment were identified and handled:
+
+| Identified Roadblock | Root Cause | Administrative Resolution |
+| :--- | :--- | :--- |
+| **`E: Package 'ufw' has no installation candidate`** | Network repository decoupling inside the sandbox templates. | Abandoned external software installs and pivoted to auditing pre-installed internal daemons (`cron`). |
+| **`-su: systemctl: command not found`** | Sandbox runs on a lightweight Upstart/legacy init container image lacking `systemd`. | Switched smoothly to traditional `service` controller management tools to query daemon states. |
+| **`-su: ps-ef: command not found`** | Shell parsing error caused by an omitted space character delimiter. | Rectified command line entry to explicit syntax: `ps -ef`. |
