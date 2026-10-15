@@ -44,7 +44,7 @@ ipconfig /all
 - Identify the default gateway.
 - Review DNS server configuration.
 
-**Screenshot:** `01-ip-configuration`
+<img width="791" height="41" alt="01-ip-configuration" src="https://github.com/user-attachments/assets/24663b68-4361-49cf-bed8-5345576b6908" />
 
 ![PowerShell IP configuration](screenshots/01-ip-configuration.png)
 
