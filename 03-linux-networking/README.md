@@ -1,93 +1,390 @@
-# Linux Networking & Cisco Fundamentals 🌐
+# 🌐 Week 3 — Windows Networking & Cisco Fundamentals
 
-Welcome to my Linux Networking repository! This project documents **Week 3** of my IT portfolio journey. It connects foundational Cisco networking principles with hands-on Linux terminal utilities to diagnose, document, and troubleshoot network path failures.
+## 🎯 Project Overview
 
----
+This project demonstrates foundational network troubleshooting using **Windows PowerShell** and **Cisco Packet Tracer**.
 
-## 📡 1. Cisco Networking Foundations
-Before troubleshooting a connectivity issue, an administrator must understand how data physically and structurally traverses an infrastructure environment.
+The goal is to investigate connectivity issues systematically, distinguish network-layer problems from application-service failures, document the root cause, apply a fix, and verify recovery.
 
-### Network Classifications
-* **LAN (Local Area Network):** Interconnects localized network computing devices within close proximity, such as a home, building, or office.
-* **MAN (Metropolitan Area Network):** Covers a larger geographical space spanning across a town or an entire city infrastructure.
-* **WAN (Wide Area Network):** Telecommunications network that connects distant regions, states, or countries across global distances.
+**Skills Demonstrated:**
+- Windows network configuration and troubleshooting
+- IPv4 addressing and routing fundamentals
+- ICMP connectivity testing
+- DNS resolution
+- TCP port connectivity testing
+- HTTP service verification
+- Cisco Packet Tracer network simulation
+- Root-cause analysis and technical documentation
 
-### Physical Network Media Specifications
-* **Twisted-pair (Copper):** Operates at speeds up to 1 Gbps with a maximum cable limit of 100 meters (least expensive solution).
-* **Fiber Optic:** High-performance media executing transmission speeds at 10 Gbps+ spanning long-distance routes up to 60 kilometers (most expensive).
-* **Wireless:** Radiates local connectivity metrics averaging 54 Mbps out to a 100-meter threshold (moderate deployment cost).
+## 🛠️ Tools and Technologies
 
----
+| Tool | Purpose |
+|---|---|
+| Windows PowerShell | Network diagnostics and connectivity testing |
+| Cisco Packet Tracer | Simulated network topology and fault investigation |
+| GitHub | Project documentation and evidence |
 
-## 💻 2. Linux Network Configuration Commands
-These core terminal utilities are used to view local interface hardware parameters and test layer connectivity mapping.
+## 📂 Repository Structure
 
-* **ifconfig** – Interface Configuration utility used to view active network details (such as IP addresses, subnet masks, and interface states) or manually assign link parameters.
-* **iwconfig** – Dedicated configuration command for managing wireless network interface components (such as SSID, frequency channels, and data rates).
-* **ping -c 4 <destination>** – Transmits a sequence of 4 ICMP Echo Request packets to verify point-to-point network-layer connectivity with a target IP host or domain name.
-
----
-
-## 🧪 3. Hands-on Linux, Networking, and Nginx Troubleshooting Lab
-
-### 🚪 The Investigative Flow
-When an infrastructure connection falls over or an endpoint is isolated, we isolate faults progressively from the local machine out to the application layer:
 ```text
-💻 COMPUTER ➔ 🌐 IP ADDRESS ➔ 🚪 DEFAULT GATEWAY ➔ 🔎 DNS ➔ 🔌 PORT ➔ 🖥️ SERVICE
+03-linux-networking/
+├── README.md
+├── screenshots/
+│   ├── 01-ip-configuration.png
+│   ├── 02-ping-test.png
+│   ├── 03-routing-table.png
+│   ├── 04-tcp-connections.png
+│   ├── 05-dns-resolution.png
+│   ├── 06-port-test.png
+│   ├── 07-http-test.png
+│   ├── 08-packet-tracer-topology.png
+│   ├── 09-baseline-connectivity.png
+│   ├── 10-http-failure.png
+│   └── 11-http-recovery.png
+└── notes/
+    └── troubleshooting-report.md
 ```
 
-### Problem Scenario
-A user reports that the local web application server hosted on the network is completely inaccessible and failing to load.
+**Where to put the screenshots**
 
-### Step-by-Step Investigation & Resolution
+Save all screenshots inside the `screenshots/` folder located in `03-linux-networking/`.
 
-#### 1️⃣ Step 1: Verify Local Network Configurations
-Check if the local machine has a properly assigned IP address and that the interfaces are up.
-```bash
-# Check wired interface settings and local IP provisioning
-ifconfig
+For example, the full path for the first screenshot should be:
 
-# Verify wireless adapter links and SSID bindings if on Wi-Fi
-iwconfig
+`03-linux-networking/screenshots/01-ip-configuration.png`
+
+Use the exact filenames listed above so the image links in this README work correctly. Capture your own terminal output and Packet Tracer results.
+
+## 🧪 Lab 1 — Windows PowerShell Network Diagnostics
+
+### Objective
+
+Inspect the local network configuration and test connectivity, DNS resolution, TCP ports, and HTTP responses using built-in Windows tools.
+
+### 1. Inspect IP Configuration
+
+**Command:**
+
+```powershell
+ipconfig /all
 ```
-* **Result:** Local interfaces are operational and configured with valid IP addresses.
 
-#### 2️⃣ Step 2: Test Local Gateway Path Connectivity
-Isolate whether the connection drop is internal to the workstation or a failure on the upstream router infrastructure.
-```bash
-# Ping your Local Default Gateway address (the router door)
-ping -c 4 192.168.1.1
+**Purpose:**
+- Identify network adapters.
+- Inspect IPv4 addresses and subnet masks.
+- Identify the default gateway.
+- Review DNS server configuration.
+
+**Screenshot:** `screenshots/01-ip-configuration.png`
+
+![PowerShell IP configuration](screenshots/01-ip-configuration.png)
+
+### 2. Test Network Connectivity
+
+**Command:**
+
+```powershell
+ping 1.1.1.1
 ```
-* **Result:** Gateway responds successfully with 0% packet loss.
 
-#### 3️⃣ Step 3: Test Target Nginx Host Network Reachability
-Attempt to contact the specific network target hosting the web server application.
-```bash
-# Execute a targeted 4-packet ICMP ping to the Nginx server IP address
-ping -c 4 192.168.1.2
+**Purpose:**
+- Test ICMP reachability to an external IP address.
+- Observe response times and packet loss.
+
+A failed ping does not automatically prove that internet connectivity is unavailable because ICMP traffic may be filtered.
+
+**Screenshot:** `screenshots/02-ping-test.png`
+
+![PowerShell ping test](screenshots/02-ping-test.png)
+
+### 3. Inspect the Default Route
+
+**Command:**
+
+```powershell
+Get-NetRoute -DestinationPrefix "0.0.0.0/0"
 ```
-* **Evidence:** The terminal returns `Destination Host Unreachable` or a 100% packet loss metric summary. 
 
-#### 4️⃣ Step 4: Root Cause Identification & Fix
-* **Root Cause:** Based on the Cisco media guidelines, the physical copper drop running to the Nginx host exceeded the 100-meter cable restriction length, resulting in severe signal degradation and a dropped link layer state on the remote switch interface.
-* **Solution:** Re-routed the network path using a certified twisted-pair cable under the 100-meter threshold to restore the hardware link layer state.
+**Purpose:**
+- Identify configured IPv4 default routes.
+- Inspect the next-hop address and interface.
+- Compare routing information with the IP configuration.
 
-#### 5️⃣ Step 5: Verification
-```bash
-# Re-test point-to-point network connectivity to the Nginx host
-ping -c 4 192.168.1.2
+**Screenshot:** `screenshots/03-routing-table.png`
+
+![PowerShell routing table](screenshots/03-routing-table.png)
+
+### 4. Inspect TCP Connections and Listening Ports
+
+**Commands:**
+
+```powershell
+Get-NetTCPConnection |
+    Select-Object -First 20
 ```
-* **Result:** ICMP transmissions are successful with a 0% packet loss response. The web server interface is reachable again.
 
----
+```powershell
+Get-NetTCPConnection -State Listen
+```
 
-## 📸 Lab Evidence
-* **Screenshot 1 — Interface Status Check:** *(Add image showing your `ifconfig` output displaying your local IP parameters)*
-* **Screenshot 2 — Failed Investigation Ping:** *(Add image showing the `ping -c 4` attempt to the Nginx host failing with unreachable errors)*
-* **Screenshot 3 — Fixed Connectivity Verification:** *(Add image showing the successful 4-packet ping transmission after resolving the infrastructure issue)*
+**Purpose:**
+- Inspect existing TCP connections.
+- Identify locally listening TCP ports.
+- Practice examining network socket information.
 
----
+These commands show local Windows TCP information; they do not directly confirm that a remote server is listening.
 
-## 🧠 What I Learned
-* **Isolating the Layer:** Instead of modifying Nginx application configurations immediately, following the logical flow saved time by proving the root problem sat purely at the physical and network layers.
-* **Physical Constraints Matter:** Knowing Cisco media limits—like the 100-meter maximum length for copper twisted-pair cabling—helps system administrators look beyond software configurations when troubleshooting intermittent network dropouts.
+**Screenshot:** `screenshots/04-tcp-connections.png`
+
+![PowerShell TCP connections](screenshots/04-tcp-connections.png)
+
+### 5. Test DNS Resolution
+
+**Command:**
+
+```powershell
+Resolve-DnsName example.com
+```
+
+**Purpose:**
+- Query DNS records for a hostname.
+- Determine whether the hostname resolves to IP addresses.
+- Collect evidence when investigating a possible name-resolution issue.
+
+**Screenshot:** `screenshots/05-dns-resolution.png`
+
+![PowerShell DNS resolution](screenshots/05-dns-resolution.png)
+
+### 6. Test TCP Port Connectivity
+
+**Command:**
+
+```powershell
+Test-NetConnection example.com -Port 443
+```
+
+**Purpose:**
+- Test TCP connectivity to the destination on port 443.
+- Inspect the destination address and connection result.
+- Determine whether the tested TCP connection succeeded.
+
+Look for:
+
+```text
+TcpTestSucceeded : True
+```
+
+A successful result confirms TCP connectivity to that destination and port at the time of testing. It does not guarantee that the website itself is functioning correctly.
+
+**Screenshot:** `screenshots/06-port-test.png`
+
+![PowerShell TCP port test](screenshots/06-port-test.png)
+
+### 7. Test an HTTP Response
+
+**Command:**
+
+```powershell
+curl.exe -I --max-time 10 https://example.com
+```
+
+**Purpose:**
+- Send an HTTP HEAD request.
+- Inspect the returned HTTP status and headers.
+- Check whether the web endpoint responds to the request.
+
+**Screenshot:** `screenshots/07-http-test.png`
+
+![PowerShell HTTP test](screenshots/07-http-test.png)
+
+## 🧪 Lab 2 — Cisco Packet Tracer Troubleshooting
+
+### Objective
+
+Simulate a small office network and investigate a website outage caused by an intentionally disabled HTTP service.
+
+### 1. Build the Network Topology
+
+Create a topology containing:
+
+- PC0 — Client workstation
+- Switch0 — Access switch
+- Router0 — Default gateway
+- Server0 — Web server
+
+Connect the devices using compatible Ethernet interfaces and Copper Straight-Through cables.
+
+**Screenshot:** `screenshots/08-packet-tracer-topology.png`
+
+![Cisco Packet Tracer topology](screenshots/08-packet-tracer-topology.png)
+
+### 2. Configure the Network
+
+Use the following IPv4 addressing plan:
+
+| Device | IPv4 Address | Subnet Mask | Default Gateway |
+|---|---|---|---|
+| PC0 | `192.168.10.10` | `255.255.255.0` | `192.168.10.1` |
+| Router0 | `192.168.10.1` | `255.255.255.0` | Not required for this LAN interface |
+| Server0 | `192.168.10.20` | `255.255.255.0` | `192.168.10.1` |
+
+Configure Router0's LAN interface with the gateway address and enable the interface.
+
+Example commands, assuming the interface is `GigabitEthernet0/0`:
+
+```text
+enable
+configure terminal
+interface gigabitEthernet 0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+end
+show ip interface brief
+```
+
+Configure PC0 and Server0 through their respective **Desktop → IP Configuration** menus.
+
+On Server0, open **Services → HTTP** and set HTTP to **On**.
+
+### 3. Verify Baseline Connectivity
+
+On PC0, open **Desktop → Command Prompt** and run:
+
+```text
+ping 192.168.10.1
+ping 192.168.10.20
+```
+
+Then open **Desktop → Web Browser** and visit:
+
+```text
+http://192.168.10.20
+```
+
+Confirm that the gateway and server respond and that the web page loads before introducing the fault.
+
+**Screenshot:** `screenshots/09-baseline-connectivity.png`
+
+![Packet Tracer baseline connectivity](screenshots/09-baseline-connectivity.png)
+
+### 4. Reproduce the Website Failure
+
+On Server0:
+
+1. Open **Services → HTTP**.
+2. Change HTTP from **On** to **Off**.
+3. Return to PC0.
+4. Ping the server again:
+
+```text
+ping 192.168.10.20
+```
+
+5. Open the browser and revisit:
+
+```text
+http://192.168.10.20
+```
+
+Expected observation:
+
+- The server remains reachable by IP.
+- The website no longer loads while HTTP is disabled.
+
+**Screenshot:** `screenshots/10-http-failure.png`
+
+![Packet Tracer HTTP failure](screenshots/10-http-failure.png)
+
+### 5. Identify the Root Cause
+
+The controlled test shows that the server remains reachable at the network layer, but the web application becomes unavailable when its HTTP service is disabled.
+
+**Root cause:** The HTTP service was intentionally switched off in the Packet Tracer server configuration.
+
+This finding is supported by the simulated test and does not imply a real-world DNS failure, routing failure, or physical cable problem.
+
+### 6. Restore the Service and Verify Recovery
+
+On Server0:
+
+1. Open **Services → HTTP**.
+2. Change HTTP back to **On**.
+3. Return to PC0.
+4. Repeat the server ping:
+
+```text
+ping 192.168.10.20
+```
+
+5. Reopen the browser:
+
+```text
+http://192.168.10.20
+```
+
+Confirm that the web page loads again.
+
+**Screenshot:** `screenshots/11-http-recovery.png`
+
+![Packet Tracer HTTP recovery](screenshots/11-http-recovery.png)
+
+## 🔎 Troubleshooting Methodology
+
+The investigation follows this general sequence:
+
+```text
+Computer
+   ↓
+IP Configuration
+   ↓
+Default Gateway
+   ↓
+Destination IP
+   ↓
+DNS Resolution
+   ↓
+TCP Port
+   ↓
+Application Service
+   ↓
+Verification
+```
+
+The sequence is a diagnostic guide rather than a rigid rule. For example, a website that is accessible by IP but not by hostname may require DNS investigation, while a reachable server with an unavailable website may require port and service checks.
+
+## 🧠 Key Learnings
+
+- Inspected Windows IP configuration and routing information.
+- Practiced ICMP connectivity testing and packet-loss interpretation.
+- Used PowerShell to inspect TCP connections and listening ports.
+- Tested DNS resolution and TCP port connectivity.
+- Inspected HTTP responses from a web endpoint.
+- Built and configured a simulated office network.
+- Reproduced an application-service failure in Cisco Packet Tracer.
+- Applied a targeted fix and verified recovery.
+- Documented findings using an evidence-based troubleshooting process.
+
+## ⚠️ Lab Limitations
+
+PowerShell diagnostics were performed on the Windows host. The controlled HTTP failure was reproduced separately in Cisco Packet Tracer.
+
+The Packet Tracer scenario is a simulation. It does not establish that the Windows host experienced the same outage or that a production network has the same configuration.
+
+## ✅ Completion Checklist
+
+- [ ] Executed the PowerShell diagnostics.
+- [ ] Recorded actual command results.
+- [ ] Captured and saved the PowerShell screenshots.
+- [ ] Built the Packet Tracer topology.
+- [ ] Verified baseline connectivity.
+- [ ] Reproduced the HTTP service failure.
+- [ ] Restored HTTP and verified recovery.
+- [ ] Saved all screenshots in the `screenshots/` directory.
+- [ ] Verified that all README image links work.
+- [ ] Reviewed the repository for confidential information.
+
+## 📌 Project Status
+
+**Status:** In progress / Completed
+
+All findings and screenshots should reflect the tests actually performed.
