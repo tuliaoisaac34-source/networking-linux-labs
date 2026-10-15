@@ -46,8 +46,6 @@ ipconfig /all
 
 <img width="791" height="41" alt="01-ip-configuration" src="https://github.com/user-attachments/assets/24663b68-4361-49cf-bed8-5345576b6908" />
 
-![PowerShell IP configuration](screenshots/01-ip-configuration.png)
-
 ### 2. Test Network Connectivity
 
 **Command:**
@@ -62,9 +60,7 @@ ping 1.1.1.1
 
 A failed ping does not automatically prove that internet connectivity is unavailable because ICMP traffic may be filtered.
 
-**Screenshot:** `screenshots/02-ping-test.png`
-
-![PowerShell ping test](screenshots/02-ping-test.png)
+<img width="539" height="233" alt="02-ping-test" src="https://github.com/user-attachments/assets/5ce12d61-00e8-4d18-b39d-1c1070ca182f" />
 
 ### 3. Inspect the Default Route
 
@@ -79,9 +75,7 @@ Get-NetRoute -DestinationPrefix "0.0.0.0/0"
 - Inspect the next-hop address and interface.
 - Compare routing information with the IP configuration.
 
-**Screenshot:** `screenshots/03-routing-table.png`
-
-![PowerShell routing table](screenshots/03-routing-table.png)
+<img width="695" height="131" alt="03-routing-table" src="https://github.com/user-attachments/assets/fbce731a-1079-447c-b4d2-02091e99a223" />
 
 ### 4. Inspect TCP Connections and Listening Ports
 
@@ -103,9 +97,8 @@ Get-NetTCPConnection -State Listen
 
 These commands show local Windows TCP information; they do not directly confirm that a remote server is listening.
 
-**Screenshot:** `screenshots/04-tcp-connections.png`
+<img width="939" height="497" alt="04-tcp-connections" src="https://github.com/user-attachments/assets/7a05110c-ab08-4ca4-ad1b-52ea632a0f6b" />
 
-![PowerShell TCP connections](screenshots/04-tcp-connections.png)
 
 ### 5. Test DNS Resolution
 
@@ -120,9 +113,7 @@ Resolve-DnsName example.com
 - Determine whether the hostname resolves to IP addresses.
 - Collect evidence when investigating a possible name-resolution issue.
 
-**Screenshot:** `screenshots/05-dns-resolution.png`
-
-![PowerShell DNS resolution](screenshots/05-dns-resolution.png)
+<img width="888" height="176" alt="05-dns-resolution" src="https://github.com/user-attachments/assets/a0dd4aa5-f7c0-4290-9d29-a18966f225a5" />
 
 ### 6. Test TCP Port Connectivity
 
@@ -145,9 +136,7 @@ TcpTestSucceeded : True
 
 A successful result confirms TCP connectivity to that destination and port at the time of testing. It does not guarantee that the website itself is functioning correctly.
 
-**Screenshot:** `screenshots/06-port-test.png`
-
-![PowerShell TCP port test](screenshots/06-port-test.png)
+<img width="599" height="187" alt="06-port-test" src="https://github.com/user-attachments/assets/2409ff77-3187-40dd-ab46-6d3274adf504" />
 
 ### 7. Test an HTTP Response
 
@@ -162,9 +151,11 @@ curl.exe -I --max-time 10 https://example.com
 - Inspect the returned HTTP status and headers.
 - Check whether the web endpoint responds to the request.
 
-**Screenshot:** `screenshots/07-http-test.png`
+<img width="645" height="265" alt="07-http-test" src="https://github.com/user-attachments/assets/e81bcdb7-a085-4fed-a0ba-fb0cd3f7eb5b" />
 
-![PowerShell HTTP test](screenshots/07-http-test.png)
+Investigation and findings:
+
+<img width="1347" height="711" alt="07-1 Investigation and findings" src="https://github.com/user-attachments/assets/7f7874c2-b91d-4319-a24b-c203fe207941" />
 
 ## 🧪 Lab 2 — Cisco Packet Tracer Troubleshooting
 
@@ -183,9 +174,7 @@ Create a topology containing:
 
 Connect the devices using compatible Ethernet interfaces and Copper Straight-Through cables.
 
-**Screenshot:** `screenshots/08-packet-tracer-topology.png`
-
-![Cisco Packet Tracer topology](screenshots/08-packet-tracer-topology.png)
+<img width="885" height="465" alt="08-packet-tracer-topology" src="https://github.com/user-attachments/assets/ba15bfdc-0b04-4b0a-8b0f-3b1c6f867ea7" />
 
 ### 2. Configure the Network
 
@@ -232,9 +221,7 @@ http://192.168.10.20
 
 Confirm that the gateway and server respond and that the web page loads before introducing the fault.
 
-**Screenshot:** `screenshots/09-baseline-connectivity.png`
-
-![Packet Tracer baseline connectivity](screenshots/09-baseline-connectivity.png)
+<img width="1141" height="591" alt="09-baseline-connectivity" src="https://github.com/user-attachments/assets/03497cd5-f3b0-4145-9687-d3d4f46cf87b" />
 
 ### 4. Reproduce the Website Failure
 
@@ -260,9 +247,7 @@ Expected observation:
 - The server remains reachable by IP.
 - The website no longer loads while HTTP is disabled.
 
-**Screenshot:** `screenshots/10-http-failure.png`
-
-![Packet Tracer HTTP failure](screenshots/10-http-failure.png)
+<img width="1128" height="584" alt="10-http-failure" src="https://github.com/user-attachments/assets/ef0d181f-c3d5-40c3-8de1-773bdbb8668d" />
 
 ### 5. Identify the Root Cause
 
@@ -293,10 +278,7 @@ http://192.168.10.20
 
 Confirm that the web page loads again.
 
-**Screenshot:** `screenshots/11-http-recovery.png`
-
-![Packet Tracer HTTP recovery](screenshots/11-http-recovery.png)
-
+<img width="1060" height="551" alt="11-http-recovery" src="https://github.com/user-attachments/assets/e9094373-a215-4cac-a049-f1be817fad25" />
 ## 🔎 Troubleshooting Methodology
 
 The investigation follows this general sequence:
@@ -354,6 +336,6 @@ The Packet Tracer scenario is a simulation. It does not establish that the Windo
 
 ## 📌 Project Status
 
-**Status:** In progress / Completed
+**Status:**  Completed
 
 All findings and screenshots should reflect the tests actually performed.
