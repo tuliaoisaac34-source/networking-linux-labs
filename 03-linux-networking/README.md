@@ -24,37 +24,6 @@ The goal is to investigate connectivity issues systematically, distinguish netwo
 | Cisco Packet Tracer | Simulated network topology and fault investigation |
 | GitHub | Project documentation and evidence |
 
-## 📂 Repository Structure
-
-```text
-03-linux-networking/
-├── README.md
-├── screenshots/
-│   ├── 01-ip-configuration.png
-│   ├── 02-ping-test.png
-│   ├── 03-routing-table.png
-│   ├── 04-tcp-connections.png
-│   ├── 05-dns-resolution.png
-│   ├── 06-port-test.png
-│   ├── 07-http-test.png
-│   ├── 08-packet-tracer-topology.png
-│   ├── 09-baseline-connectivity.png
-│   ├── 10-http-failure.png
-│   └── 11-http-recovery.png
-└── notes/
-    └── troubleshooting-report.md
-```
-
-**Where to put the screenshots**
-
-Save all screenshots inside the `screenshots/` folder located in `03-linux-networking/`.
-
-For example, the full path for the first screenshot should be:
-
-`03-linux-networking/screenshots/01-ip-configuration.png`
-
-Use the exact filenames listed above so the image links in this README work correctly. Capture your own terminal output and Packet Tracer results.
-
 ## 🧪 Lab 1 — Windows PowerShell Network Diagnostics
 
 ### Objective
@@ -75,7 +44,7 @@ ipconfig /all
 - Identify the default gateway.
 - Review DNS server configuration.
 
-**Screenshot:** `screenshots/01-ip-configuration.png`
+**Screenshot:** `01-ip-configuration`
 
 ![PowerShell IP configuration](screenshots/01-ip-configuration.png)
 
