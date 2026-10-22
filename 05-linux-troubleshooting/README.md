@@ -1,7 +1,5 @@
 # Linux & Service Troubleshooting 🛠️
 
-Welcome to Week 5 of my IT portfolio journey!
-
 In this project, I practiced troubleshooting a Linux web server by investigating a stopped Nginx service and diagnosing an intentionally introduced configuration error. The goal was to understand how to identify service problems, inspect system processes, analyze configuration errors, and safely restore normal operation.
 
 Rather than immediately reinstalling software or guessing at the cause, I followed a structured troubleshooting process: **investigate, identify the root cause, apply a fix, and verify the result.**
