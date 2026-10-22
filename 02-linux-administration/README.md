@@ -1,4 +1,4 @@
-Welcome to my Linux Administration repository! This section documents **Week 2** of my IT portfolio journey. It covers administrative access, symbolic and numeric permission modifications, file and group ownership configurations, input filtering, and tracking active system processes.
+Welcome to my Linux Administration repository! It covers administrative access, symbolic and numeric permission modifications, file and group ownership configurations, input filtering, and tracking active system processes.
 
 ---
 
