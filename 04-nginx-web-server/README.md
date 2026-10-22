@@ -1,7 +1,5 @@
 # Nginx Web Server Administration 🖥️
 
-Welcome to Week 4 of my IT portfolio journey!
-
 In this project, I practiced deploying and managing a web server using **Nginx on Ubuntu Linux through WSL**. My goal was to understand how a web server operates, how to manage Linux packages and services, and how to deploy a simple custom webpage.
 
 This lab helped me connect Linux command-line administration with a real-world IT task: making sure a web service is running and delivering content correctly to a client.
